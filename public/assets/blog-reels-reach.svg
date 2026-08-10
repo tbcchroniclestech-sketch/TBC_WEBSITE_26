@@ -1,0 +1,46 @@
+<svg width="1600" height="950" viewBox="0 0 1600 950" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="950" fill="#F7F5F2"/>
+  <circle cx="1290" cy="210" r="330" fill="#E85A8B" fill-opacity=".16"/>
+  <circle cx="300" cy="760" r="360" fill="#B9E5D4" fill-opacity=".2"/>
+  <circle cx="830" cy="500" r="440" fill="white" fill-opacity=".48"/>
+  <g filter="url(#shadow)">
+    <rect x="212" y="154" width="1176" height="642" rx="52" fill="white" fill-opacity=".42"/>
+    <rect x="213" y="155" width="1174" height="640" rx="51" stroke="white" stroke-opacity=".72" stroke-width="2"/>
+  </g>
+  <rect x="294" y="244" width="360" height="462" rx="42" fill="#171717"/>
+  <rect x="322" y="286" width="304" height="326" rx="32" fill="url(#reelGrad)"/>
+  <circle cx="474" cy="449" r="96" fill="#F7F5F2" fill-opacity=".82"/>
+  <path d="M452 407v92l73-46-73-46Z" fill="#171717"/>
+  <rect x="346" y="642" width="196" height="18" rx="9" fill="#F7F5F2" fill-opacity=".8"/>
+  <rect x="346" y="676" width="120" height="12" rx="6" fill="#E85A8B"/>
+  <g opacity=".96">
+    <path d="M776 653h442" stroke="#171717" stroke-width="28" stroke-linecap="round"/>
+    <path d="M776 547h506" stroke="#171717" stroke-width="28" stroke-linecap="round"/>
+    <path d="M776 441h350" stroke="#171717" stroke-width="28" stroke-linecap="round"/>
+    <path d="M776 335h430" stroke="#171717" stroke-width="28" stroke-linecap="round"/>
+  </g>
+  <g>
+    <circle cx="779" cy="244" r="24" fill="#E85A8B"/>
+    <circle cx="908" cy="244" r="24" fill="#171717"/>
+    <circle cx="1037" cy="244" r="24" fill="#D9D9D9"/>
+    <path d="M779 244c71 86 157 86 258 0" stroke="#E85A8B" stroke-opacity=".38" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <g filter="url(#soft)">
+    <rect x="1120" y="575" width="164" height="92" rx="46" fill="#E85A8B" fill-opacity=".88"/>
+    <path d="M1188 611v24l27-12-27-12Z" fill="white"/>
+  </g>
+  <path d="M687 738c156-62 336-50 520-34" stroke="#E85A8B" stroke-width="8" stroke-linecap="round" stroke-dasharray="18 22" opacity=".36"/>
+  <defs>
+    <filter id="shadow" x="156" y="98" width="1288" height="754" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="32" stdDeviation="38" flood-color="#171717" flood-opacity=".13"/>
+    </filter>
+    <filter id="soft" x="1078" y="533" width="248" height="176" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="21"/>
+    </filter>
+    <linearGradient id="reelGrad" x1="322" y1="286" x2="626" y2="612" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E85A8B" stop-opacity=".58"/>
+      <stop offset=".52" stop-color="#F7F5F2" stop-opacity=".62"/>
+      <stop offset="1" stop-color="#171717" stop-opacity=".32"/>
+    </linearGradient>
+  </defs>
+</svg>

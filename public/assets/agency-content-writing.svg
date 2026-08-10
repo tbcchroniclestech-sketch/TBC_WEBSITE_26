@@ -1,0 +1,92 @@
+<svg width="1200" height="1200" viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="softShadow" x="180" y="185" width="840" height="830" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="36" stdDeviation="42" flood-color="#1D1D1F" flood-opacity="0.12"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="60" flood-color="#E85A8B" flood-opacity="0.16"/>
+    </filter>
+    <filter id="wordShadow" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#1D1D1F" flood-opacity="0.08"/>
+    </filter>
+    <linearGradient id="paper" x1="360" y1="270" x2="850" y2="850" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.92"/>
+      <stop offset="0.55" stop-color="#FFFFFF" stop-opacity="0.58"/>
+      <stop offset="1" stop-color="#F7F5F2" stop-opacity="0.72"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="386" y1="290" x2="738" y2="646" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.92"/>
+      <stop offset="0.42" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.12"/>
+    </linearGradient>
+    <radialGradient id="pinkGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(604 596) rotate(90) scale(410)">
+      <stop stop-color="#E85A8B" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#E85A8B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="1200" fill="#F7F5F2"/>
+  <rect x="118" y="115" width="964" height="962" rx="64" fill="#FFFFFF" fill-opacity="0.18"/>
+  <circle cx="600" cy="600" r="435" fill="url(#pinkGlow)"/>
+  <path d="M216 380C316 320 386 350 452 278C536 186 688 180 760 260C846 356 986 338 1030 466C1082 614 950 750 823 786C698 823 585 952 440 892C293 832 246 732 222 615C202 518 114 442 216 380Z" fill="#FFFFFF" fill-opacity="0.28"/>
+
+  <g filter="url(#softShadow)">
+    <rect x="378" y="280" width="444" height="548" rx="38" fill="url(#paper)" stroke="#FFFFFF" stroke-opacity="0.72" stroke-width="3"/>
+    <path d="M756 280V390C756 410 773 427 794 427H822" stroke="#D9D9D9" stroke-width="3" opacity="0.65"/>
+    <path d="M756 282L821 427" stroke="#FFFFFF" stroke-width="3" opacity="0.55"/>
+    <rect x="440" y="378" width="176" height="16" rx="8" fill="#1D1D1F" opacity="0.86"/>
+    <rect x="440" y="432" width="306" height="10" rx="5" fill="#D9D9D9"/>
+    <rect x="440" y="466" width="254" height="10" rx="5" fill="#D9D9D9"/>
+    <rect x="440" y="500" width="318" height="10" rx="5" fill="#D9D9D9"/>
+    <rect x="440" y="558" width="112" height="13" rx="6.5" fill="#E85A8B" opacity="0.54"/>
+    <rect x="568" y="558" width="186" height="13" rx="6.5" fill="#D9D9D9" opacity="0.9"/>
+    <rect x="440" y="598" width="286" height="10" rx="5" fill="#D9D9D9"/>
+    <rect x="440" y="632" width="220" height="10" rx="5" fill="#D9D9D9"/>
+    <rect x="440" y="684" width="264" height="10" rx="5" fill="#D9D9D9"/>
+    <rect x="440" y="718" width="142" height="10" rx="5" fill="#D9D9D9"/>
+    <path d="M652 746C692 728 728 730 770 750" stroke="#E85A8B" stroke-width="8" stroke-linecap="round" opacity="0.54"/>
+    <rect x="405" y="306" width="390" height="200" rx="32" fill="url(#shine)" opacity="0.72"/>
+  </g>
+
+  <g filter="url(#wordShadow)" font-family="Inter, Arial, sans-serif" text-anchor="middle">
+    <text x="248" y="300" fill="#1D1D1F" font-size="66" font-weight="900" transform="rotate(-9 248 300)">VOICE</text>
+    <text x="928" y="326" fill="#E85A8B" font-size="62" font-weight="900" transform="rotate(8 928 326)">HOOK</text>
+    <text x="252" y="478" fill="#D9D9D9" font-size="48" font-weight="800" transform="rotate(7 252 478)">CAPTION</text>
+    <text x="936" y="506" fill="#1D1D1F" font-size="54" font-weight="900" transform="rotate(-7 936 506)">COPY</text>
+    <text x="226" y="650" fill="#E85A8B" font-size="52" font-weight="900" transform="rotate(-4 226 650)">STORY</text>
+    <text x="964" y="696" fill="#D9D9D9" font-size="46" font-weight="850" transform="rotate(6 964 696)">BRAND</text>
+    <text x="308" y="826" fill="#1D1D1F" font-size="48" font-weight="900" transform="rotate(7 308 826)">BLOG</text>
+    <text x="904" y="862" fill="#E85A8B" font-size="44" font-weight="900" transform="rotate(-8 904 862)">SCRIPT</text>
+    <text x="586" y="202" fill="#1D1D1F" font-size="44" font-weight="850" transform="rotate(2 586 202)">HEADLINE</text>
+    <text x="600" y="960" fill="#D9D9D9" font-size="46" font-weight="850" transform="rotate(-2 600 960)">CONTENT</text>
+    <text x="392" y="218" fill="#E85A8B" font-size="34" font-weight="850" transform="rotate(-13 392 218)">REELS</text>
+    <text x="810" y="206" fill="#D9D9D9" font-size="34" font-weight="850" transform="rotate(11 810 206)">SEO</text>
+    <text x="1014" y="598" fill="#1D1D1F" font-size="36" font-weight="850" transform="rotate(13 1014 598)">IDEAS</text>
+  </g>
+
+  <g stroke="#1D1D1F" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M298 902C354 868 416 864 468 890" stroke-width="6" opacity="0.72"/>
+    <path d="M872 248C900 220 940 219 966 246" stroke-width="5" opacity="0.7"/>
+    <path d="M856 246L966 246" stroke-width="5" opacity="0.7"/>
+    <path d="M888 230L888 262" stroke-width="5" opacity="0.7"/>
+    <path d="M958 238L958 254" stroke-width="5" opacity="0.7"/>
+    <path d="M815 785L895 742" stroke-width="10" opacity="0.8"/>
+    <path d="M882 730L922 756L898 796L858 770L882 730Z" fill="#FFFFFF" fill-opacity="0.38" stroke-width="5"/>
+    <path d="M438 250L438 302" stroke="#E85A8B" stroke-width="6"/>
+  </g>
+
+  <g fill="#E85A8B">
+    <rect x="232" y="562" width="108" height="12" rx="6" transform="rotate(-5 232 562)" opacity="0.42"/>
+    <rect x="842" y="580" width="122" height="12" rx="6" transform="rotate(5 842 580)" opacity="0.34"/>
+    <circle cx="310" cy="222" r="7"/>
+    <circle cx="916" cy="910" r="6" opacity="0.7"/>
+    <path d="M705 216L718 246L748 259L718 272L705 302L692 272L662 259L692 246L705 216Z" opacity="0.62"/>
+    <path d="M257 740L266 761L287 770L266 779L257 800L248 779L227 770L248 761L257 740Z" opacity="0.48"/>
+    <path d="M981 420L989 439L1008 447L989 455L981 474L973 455L954 447L973 439L981 420Z" opacity="0.5"/>
+  </g>
+
+  <g fill="#1D1D1F" opacity="0.9">
+    <text x="324" y="388" font-family="Inter, Arial, sans-serif" font-size="88" font-weight="900">"</text>
+    <text x="840" y="832" font-family="Inter, Arial, sans-serif" font-size="88" font-weight="900">"</text>
+  </g>
+
+  <rect x="744" y="596" width="5" height="52" rx="2.5" fill="#1D1D1F"/>
+</svg>
