@@ -274,10 +274,9 @@ function MagneticButton({ children, href = "#contact" }: { children: React.React
 }
 
 const TURNTABLE_PLAYLIST = [
-  { title: "Loksii No Copyright Music 01", src: "/assets/loksii-no-copyright-music-211881.mp3" },
-  { title: "Loksii No Copyright Music 02", src: "/assets/loksii-no-copyright-music-211881.mp3" },
-  { title: "Loksii No Copyright Music 03", src: "/assets/loksii-no-copyright-music-211881.mp3" },
-  { title: "Loksii No Copyright Music 04", src: "/assets/loksii-no-copyright-music-211881.mp3" },
+  { id: "loksii-no-copyright-music", title: "Loksii No Copyright Music", src: "/assets/loksii-no-copyright-music-211881.mp3" },
+  { id: "funk-rock-instrumental", title: "Funk Rock Instrumental", src: "/assets/lyrium-funk-rock-instrumental.mp3" },
+  { id: "tbc-audio", title: "TBC Audio", src: "/assets/tbc-whatsapp-audio.mp3" },
 ] as const;
 const TURNTABLE_VOLUME_TICK_SOURCE = "/assets/volume-fader-tick.wav";
 const TURNTABLE_VOLUME_STORAGE_KEY = "tbc-turntable-volume";
@@ -932,7 +931,7 @@ function VinylTurntable() {
             ))}
           </div>
           <strong>VOLUME</strong>
-          <div className="premium-playback-controls" aria-label="Playlist controls">
+          <div className="premium-playback-controls" aria-label={`Playlist controls. Current track: ${TURNTABLE_PLAYLIST[trackIndex].title}`} title={TURNTABLE_PLAYLIST[trackIndex].title}>
             <button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={(event) => {
               event.stopPropagation();
               changeTrack(-1);
