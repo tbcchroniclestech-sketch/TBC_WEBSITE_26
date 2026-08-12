@@ -27,6 +27,180 @@ export type Blog = {
 
 export const blogs: Blog[] = [
   {
+    id: "scroll-stopping-content",
+    slug: "scroll-stopping-content",
+    title: "The Science of Scroll-Stopping Content: Why Some Posts Stop Us In Our Tracks",
+    category: "Content Strategy",
+    banner: "/assets/tbc-logo-official.png",
+    description:
+      "Discover the psychology behind scroll-stopping content, from powerful hooks and pattern interrupts to emotion, visual storytelling, and strategies that turn attention into engagement.",
+    introduction:
+      "Every brand is battling for the same thing online. Attention. People read through reels, posts, adverts, and carousels all day long, and most are forgotten within seconds.",
+    date: "August 12, 2026",
+    datePublished: "2026-08-12",
+    dateModified: "2026-08-12",
+    readTime: "4 min read",
+    seoTitle: "The Science of Scroll-Stopping Content",
+    seoDescription:
+      "Discover the psychology behind scroll-stopping content, from powerful hooks and pattern interrupts to emotion, visual storytelling, and strategies that turn attention into engagement.",
+    keywords: [
+      "scroll-stopping content",
+      "content strategy",
+      "visual storytelling",
+      "content engagement",
+      "social media hooks",
+      "pattern interrupts",
+      "creative agency",
+    ],
+    imageAlt: "The Baroda Chronicles logo for scroll-stopping content strategy article",
+    content: [
+      {
+        type: "paragraph",
+        text:
+          "Every brand is battling for the same thing online. Attention. People read through reels, posts, adverts, and carousels all day long, and most are forgotten within seconds. That changes the task for agencies. We build scroll-stopping content that offers people a cause to halt and stay.",
+      },
+      {
+        type: "paragraph",
+        text:
+          "The loudest scroll content is not always the strongest stopping stuff. It's based on how individuals actually react when they’re scrolling.",
+      },
+      { type: "heading", text: "What Is Scroll-Stopping Content?" },
+      {
+        type: "paragraph",
+        text:
+          "Scroll-stopping content is created to break scrolling and get active attention. This break can happen because of an impressive visual, unexpected lead-in, a story relatable to the viewers or an emotional trigger.",
+      },
+      {
+        type: "paragraph",
+        text:
+          "From the agency's point of view, the purpose is not just to \"go viral\". It is about shifting from viewing to noticing and from watching to reacting. And this is when content engagement happens.",
+      },
+      { type: "heading", text: "What Do We Do While Scrolling?" },
+      {
+        type: "paragraph",
+        text:
+          "We scan our feeds fast. Cluttered frame, dull headline or tedious beginning do not give us any reasons to stop there. First of all, scroll-stopping content should stand out from what we usually see.",
+      },
+      { type: "heading", text: "Pattern Interrupts: The First Step to Getting Attention" },
+      {
+        type: "paragraph",
+        text:
+          "The pattern interrupt creates the difference in the rhythm of the scrolling. It might be an unusual camera angle, an unexpected statement, a weird prop, a raw visual or plain simplicity.",
+      },
+      {
+        type: "paragraph",
+        text:
+          "Visual Storytelling is crucial in creating the effect. Instead of telling a lot of things using text, a visual does all the work of setting the context, mood and making the viewers curious. And good visual storytelling makes people get it before they think about it.",
+      },
+      { type: "heading", text: "Psychology Behind an Excellent Hook" },
+      {
+        type: "paragraph",
+        text:
+          "An excellent hook raises an instant question in the mind of the audience. It challenges an assumption, poses a problem, starts midway into a story, or provides something valuable to think about.",
+      },
+      {
+        type: "paragraph",
+        text:
+          "\"5 social media tips for businesses\" sounds good, but it lacks suspense. Your best-performing post could be damaging your brand image\" sounds more compelling.",
+      },
+      {
+        type: "paragraph",
+        text:
+          "Curiosity is an integral part of scroll-stopping content. Good agency content provides just enough information to arouse interest without revealing everything yet.",
+      },
+      { type: "heading", text: "Emotion Drives Content Engagement" },
+      {
+        type: "paragraph",
+        text:
+          "People rarely engage because content is technically perfect. They engage because it makes them feel something.",
+      },
+      {
+        type: "paragraph",
+        text:
+          "Humour, surprise, recognition, aspiration, frustration, or disagreement can increase content engagement. Even thinking, “That is literally me,” is a response.",
+      },
+      {
+        type: "paragraph",
+        text:
+          "Agencies should define the intended reaction before choosing the script, format, design, or hook.",
+      },
+      { type: "heading", text: "Why Visual Storytelling Matters" },
+      {
+        type: "paragraph",
+        text:
+          "Social platforms are visual environments, so ideas need to communicate quickly.",
+      },
+      {
+        type: "paragraph",
+        text:
+          "Visual storytelling lets us show a problem, character, or emotion rather than over-explaining it. A messy desk can communicate work stress. A reaction shot can say more than a paragraph.",
+      },
+      {
+        type: "paragraph",
+        text:
+          "For an agency, visual storytelling also reduces the effort required to understand a message. The most effective scroll-stopping content often combines a strong opening visual with a verbal hook: one earns attention, while the other gives it direction.",
+      },
+      { type: "heading", text: "Simplicity Beats Confusion" },
+      {
+        type: "paragraph",
+        text:
+          "Curiosity says, “I want to know what happens next.” Confusion says, “I have no idea what this is about.”",
+      },
+      {
+        type: "paragraph",
+        text:
+          "Too much text, too many elements, or vague messaging can reduce content engagement. Every creative should quickly answer one question: what should the audience understand, feel, or do?",
+      },
+      { type: "heading", text: "Our Framework for Scroll-Stopping Content" },
+      {
+        type: "paragraph",
+        text:
+          "As an agency, we use a four-step way to think about scrolling content:",
+      },
+      {
+        type: "list",
+        items: [
+          "Stand Out: Break the pattern.",
+          "Trigger Curiosity: Give people a reason to continue.",
+          "Offer Value: Reward attention with information, entertainment, relevance, or emotion.",
+          "Pay It Off: Deliver what the hook promised.",
+        ],
+      },
+      {
+        type: "paragraph",
+        text:
+          "This works across reels, carousels, static creatives, and ads.",
+      },
+      { type: "heading", text: "How Do You Know It Worked?" },
+      {
+        type: "paragraph",
+        text:
+          "Views only tell part of the story. Watch time, retention, saves, shares, comments, clicks, and completion rates show whether the audience actually cared.",
+      },
+      {
+        type: "paragraph",
+        text:
+          "Content engagement is behavioural. If people stay, save, share, or respond, the creative has done more than simply appear on screen.",
+      },
+      { type: "heading", text: "The Real Science of Stopping the Scroll" },
+      {
+        type: "paragraph",
+        text:
+          "The future of social media is not about producing more content. It is about producing better reasons to pay attention.",
+      },
+      {
+        type: "paragraph",
+        text:
+          "Scroll-stopping content works when strategy, curiosity, emotion, clarity, and visual storytelling work together. For agencies, the objective is simple: stop treating the feed like a billboard and create content people want to notice.",
+      },
+      {
+        type: "paragraph",
+        text:
+          "That is the difference between appearing in the feed and becoming part of the conversation.",
+      },
+    ],
+  },
+  {
     id: "reels-reach-suddenly-drops",
     slug: "reels-reach-suddenly-drops",
     title: "Reels Reach Suddenly Drops? Here's Why It Occurs and How to Fix It",

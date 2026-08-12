@@ -8,13 +8,19 @@
   </url>
   <url>
     <loc>https://thebarodachronicles.com/blog</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://thebarodachronicles.com/blog/reels-reach-suddenly-drops</loc>
     <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thebarodachronicles.com/blog/scroll-stopping-content</loc>
+    <lastmod>2026-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
