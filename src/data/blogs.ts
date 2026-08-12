@@ -31,7 +31,7 @@ export const blogs: Blog[] = [
     slug: "scroll-stopping-content",
     title: "The Science of Scroll-Stopping Content: Why Some Posts Stop Us In Our Tracks",
     category: "Content Strategy",
-    banner: "/assets/tbc-logo-official.png",
+    banner: "/assets/scroll-stopping-content-banner.png",
     description:
       "Discover the psychology behind scroll-stopping content, from powerful hooks and pattern interrupts to emotion, visual storytelling, and strategies that turn attention into engagement.",
     introduction:
@@ -52,7 +52,7 @@ export const blogs: Blog[] = [
       "pattern interrupts",
       "creative agency",
     ],
-    imageAlt: "The Baroda Chronicles logo for scroll-stopping content strategy article",
+    imageAlt: "Scroll stop engage banner showing a phone touch interaction for scroll-stopping content strategy",
     content: [
       {
         type: "paragraph",

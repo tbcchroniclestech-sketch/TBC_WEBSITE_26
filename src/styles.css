@@ -2973,6 +2973,11 @@ h1 span {
   will-change: transform;
 }
 
+.blog-card-image img[src$="scroll-stopping-content-banner.png"],
+.blog-article-banner img[src$="scroll-stopping-content-banner.png"] {
+  object-fit: contain;
+}
+
 .blog-card a:hover .blog-card-image img,
 .blog-card a:focus-visible .blog-card-image img {
   transform: scale(1.045) translateZ(0);
