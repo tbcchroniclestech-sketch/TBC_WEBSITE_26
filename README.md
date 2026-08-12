@@ -114,4 +114,4 @@ dist
 
 `vercel.json` includes an SPA rewrite so direct links such as `/blog` and `/blog/reels-reach-suddenly-drops` resolve to `index.html` while static assets remain available from `public`.
 
-The Vite config intentionally uses `base: "./"` and manual chunks for production hosting compatibility. Do not change this casually.
+The Vite config intentionally uses `base: "/"` and manual chunks for production hosting compatibility. The root-relative base is required so direct routes such as `/blog/reels-reach-suddenly-drops` load production JS/CSS from `/assets/` instead of `/blog/assets/`.
