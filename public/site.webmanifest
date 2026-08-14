@@ -1,0 +1,20 @@
+{
+  "name": "The Baroda Chronicles",
+  "short_name": "TBC",
+  "description": "Stories, satire, and sketches about real life. Simple, honest, and sometimes too real.",
+  "icons": [
+    {
+      "src": "/assets/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#F7F5F2",
+  "background_color": "#F7F5F2",
+  "display": "standalone"
+}
