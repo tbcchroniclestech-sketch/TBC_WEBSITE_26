@@ -1588,13 +1588,13 @@ function App() {
         <section className="contact" id="contact" data-reveal>
           <p className="section-kicker">Contact</p>
           <h2>Bring us a brand, a venue, a half-formed joke, or a very serious launch problem.</h2>
-          <MagneticButton href="mailto:tbcstudio99@gmail.com">tbcstudio99@gmail.com</MagneticButton>
+          <MagneticButton href="mailto:info@thebarodachronicles.com">info@thebarodachronicles.com</MagneticButton>
           <div className="contact-links" aria-label="Contact The Baroda Chronicles">
-            <a className="contact-link" href="mailto:tbcstudio99@gmail.com">
+            <a className="contact-link" href="mailto:info@thebarodachronicles.com">
               <span className="contact-link-icon" aria-hidden="true"><Mail size={20} /></span>
               <span>
                 <strong>Email</strong>
-                <small>tbcstudio99@gmail.com</small>
+                <small>info@thebarodachronicles.com</small>
               </span>
             </a>
             <a
