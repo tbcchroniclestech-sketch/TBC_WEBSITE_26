@@ -8,9 +8,15 @@
   </url>
   <url>
     <loc>https://thebarodachronicles.com/blog</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-08-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thebarodachronicles.com/blog/how-brands-create-communities</loc>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://thebarodachronicles.com/blog/reels-reach-suddenly-drops</loc>
