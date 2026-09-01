@@ -3,15 +3,30 @@ import { motion } from "framer-motion";
 import { SEO, seoConfig } from "../components/SEO";
 import { getBlogBySlug, type BlogContentBlock } from "../data/blogs";
 
+function InlineText({ text }: { text: string }) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return (
+    <>
+      {parts.map((part, index) =>
+        part.startsWith("**") && part.endsWith("**") ? (
+          <strong key={`${part}-${index}`}>{part.slice(2, -2)}</strong>
+        ) : (
+          part
+        ),
+      )}
+    </>
+  );
+}
+
 function ArticleBlock({ block }: { block: BlogContentBlock }) {
-  if (block.type === "heading") return <h2>{block.text}</h2>;
-  if (block.type === "subheading") return <h3>{block.text}</h3>;
-  if (block.type === "quote") return <blockquote>{block.text}</blockquote>;
+  if (block.type === "heading") return <h2><InlineText text={block.text} /></h2>;
+  if (block.type === "subheading") return <h3><InlineText text={block.text} /></h3>;
+  if (block.type === "quote") return <blockquote><InlineText text={block.text} /></blockquote>;
   if (block.type === "highlight") {
     return (
       <aside className="blog-highlight">
-        <strong>{block.title}</strong>
-        <p>{block.text}</p>
+        <strong><InlineText text={block.title} /></strong>
+        <p><InlineText text={block.text} /></p>
       </aside>
     );
   }
@@ -19,12 +34,12 @@ function ArticleBlock({ block }: { block: BlogContentBlock }) {
     return (
       <ul>
         {block.items.map((item) => (
-          <li key={item}>{item}</li>
+          <li key={item}><InlineText text={item} /></li>
         ))}
       </ul>
     );
   }
-  return <p>{block.text}</p>;
+  return <p><InlineText text={block.text} /></p>;
 }
 
 export function BlogPostPage({ slug }: { slug: string }) {
