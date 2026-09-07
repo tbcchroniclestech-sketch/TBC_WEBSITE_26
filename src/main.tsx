@@ -76,6 +76,18 @@ type YouTubeVideo = {
   url: string;
 };
 
+type TeamLead = {
+  name: string;
+  role: string;
+  description: string[];
+};
+
+type TeamMember = {
+  name: string;
+  role: string;
+  description: string;
+};
+
 const localThumbnailFallbacks: Record<string, string> = {
   "https://www.instagram.com/p/DaA-HR6qykb/": "/assets/grid.png",
   "https://www.instagram.com/p/DZpSMESv-jK/": "/assets/somewhere.png",
@@ -176,7 +188,63 @@ const agencyVisualImages: Partial<Record<AgencyStory["visual"], string>> = {
 
 const youtubeChannelUrl = "https://www.youtube.com/@TheBarodaChronicles";
 
+const teamLeads: TeamLead[] = [
+  {
+    name: "Nirmal Jobanputra",
+    role: "CO-FOUNDER & BRAND STRATEGIST",
+    description: [
+      "With over 15 years of experience across marketing, branding, advertising and content, Nirmal brings together strategy, storytelling and business thinking. His journey spans copywriting, client servicing, social media, campaign strategy and brand building, giving him a deep understanding of how ideas turn into brands people remember.",
+      "At The Baroda Chronicles, he leads brand strategy, creative direction, partnerships and business growth, helping shape TBC into a contemporary media and marketing platform built around culture, conversations and compelling storytelling.",
+    ],
+  },
+  {
+    name: "Aniket Sheth",
+    role: "CREATIVE HEAD",
+    description: [
+      "A storyteller at heart and a creative strategist by profession, Aniket has been part of The Baroda Chronicles since its inception, shaping its creative voice alongside the founding team.",
+      "With experience spanning copywriting, scriptwriting, theatre, advertising, campaign ideation and production, he brings an instinctive understanding of what makes people stop, watch and remember. At TBC, Aniket leads creative direction, concepts, scripts and storytelling, helping transform everyday observations, culture and conversations into content that feels distinctly TBC.",
+    ],
+  },
+];
+
+const teamMembers: TeamMember[] = [
+  {
+    name: "Vamsee",
+    role: "Technology & Automation",
+    description: "Leads the technology side of TBC, building smarter systems, workflows and digital solutions that make the team faster and more efficient.",
+  },
+  {
+    name: "Vibhav",
+    role: "In-House Editor",
+    description: "Turns ideas and footage into sharp, engaging visual stories through editing and post-production.",
+  },
+  {
+    name: "Priyal",
+    role: "Manager & Social Media",
+    description: "Manages social media and day-to-day coordination, keeping content moving smoothly from planning to publishing.",
+  },
+  {
+    name: "Yashita",
+    role: "In-House Creator",
+    description: "Works across content creation and visual storytelling, bringing ideas to life both behind and in front of the camera.",
+  },
+  {
+    name: "Anjali & Shubhankar",
+    role: "Interns",
+    description: "Support the team across research, content, ideation and everyday creative execution.",
+  },
+];
+
 const youtubeVideos: YouTubeVideo[] = [
+  {
+    id: "R4iuX9Y5Zfk",
+    title: "You Won't Believe What's Inside MSU Baroda! | Hidden History of Vadodara",
+    duration: "25:51",
+    category: "Documentary",
+    thumbnailUrl: "/assets/youtube-msu-hidden-heritage.png",
+    fallbackThumbnailUrl: "/assets/youtube-msu-hidden-heritage.png",
+    url: "https://www.youtube.com/watch?v=R4iuX9Y5Zfk",
+  },
   {
     id: "DUZ43m2XuV0",
     title: "We Investigated a public library in Gujarat!",
@@ -1290,7 +1358,7 @@ function YouTubeShowcaseSection() {
       >
         <div>
           <p className="section-kicker">YOUTUBE</p>
-          <h2 id="youtube-heading">Stories worth watching.</h2>
+          <h2 id="youtube-heading">We are on Youtube too</h2>
           <p>
             Long-form stories, documentaries, vlogs, satire, and conversations from Vadodara—made with curiosity, humor, and a camera that refuses to look away.
           </p>
@@ -1480,20 +1548,47 @@ function App() {
           </div>
         </section>
 
-        <section className="about" data-reveal>
-          <div className="about-media">
-            <img src="/assets/are-you-from-baroda.png" alt="Are you from Baroda reel by The Baroda Chronicles" loading="lazy" />
-            <div className="about-media-caption">
-              <Play size={16} />
-              <span>29.6K people heard the question.</span>
+        <section className="about">
+          <div className="team-hero" data-reveal>
+            <div className="team-intro">
+              <p className="section-kicker">About TBC</p>
+              <h2>The people behind the <span>stories.</span></h2>
+              <p>
+                The Baroda Chronicles is powered by a multidisciplinary team that brings together strategy, creativity, technology, production and social media under one roof.
+              </p>
+            </div>
+            <div className="team-photo-card">
+              <img src="/assets/tbc-team-photo.jpeg" alt="The Baroda Chronicles team" loading="lazy" />
             </div>
           </div>
-          <div className="about-copy">
-            <p className="section-kicker">About</p>
-            <h2>TBC makes Baroda feel like a frame, a punchline, a memory, and a brand world at the same time.</h2>
+
+          <div className="team-leadership" aria-label="TBC leadership">
+            {teamLeads.map((lead) => (
+              <article className="team-lead-card" key={lead.name} data-reveal>
+                <span>{lead.role}</span>
+                <h3>{lead.name}</h3>
+                {lead.description.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </article>
+            ))}
+          </div>
+
+          <div className="team-grid" aria-label="TBC wider team">
+            {teamMembers.map((member) => (
+              <article className="team-member-card" key={member.name} data-reveal>
+                <span>{member.role}</span>
+                <h3>{member.name}</h3>
+                <p>{member.description}</p>
+              </article>
+            ))}
+          </div>
+
+          <div className="team-closing" data-reveal>
             <p>
-              We turn local texture into cinematic internet objects: the cutting chai, the meet-up poster, the comment that refuses to behave, the reel that starts as a joke and ends as a campaign strategy.
+              We operate as a compact, hands-on team where ideas do not pass through endless departments - they are strategised, created, produced and executed in-house.
             </p>
+            <strong>Strategy. Stories. Systems. Execution. All under one roof.</strong>
           </div>
         </section>
 
@@ -1531,8 +1626,6 @@ function App() {
           </div>
         </section>
 
-        <YouTubeShowcaseSection />
-
         <section className="community">
           <div className="section-head" data-reveal>
             <p className="section-kicker">Community Love</p>
@@ -1553,10 +1646,12 @@ function App() {
           </div>
         </section>
 
+        <YouTubeShowcaseSection />
+
         <section className="verified" data-reveal>
           <div>
             <p className="section-kicker">Verified Interactions</p>
-            <h2>The city notices the work.</h2>
+            <h2>The city likes us &amp; you will too.</h2>
           </div>
           <div className="verified-grid">
             {[
