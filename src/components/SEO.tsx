@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-const siteUrl = "https://thebarodachronicles.com";
+const siteUrl = "https://www.thebarodachronicles.com";
 const siteName = "The Baroda Chronicles";
 const brandDescription =
   "Stories, satire, and sketches about real life. Simple, honest, and sometimes too real.";
@@ -63,6 +63,7 @@ export function SEO({
       <meta name="description" content={description} />
       {keywords.length > 0 ? <meta name="keywords" content={keywords.join(", ")} /> : null}
       <meta name="author" content={siteName} />
+      <meta name="robots" content="index, follow" />
       <link rel="canonical" href={canonicalUrl} />
 
       <meta property="og:site_name" content={siteName} />

@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/blog",
+      "destination": "/blog/index.html"
+    },
+    {
+      "source": "/blog/:slug",
+      "destination": "/blog/:slug/index.html"
+    },
+    {
       "source": "/((?!_vercel/|assets/|robots.txt|sitemap.xml|site.webmanifest|favicon.ico).*)",
       "destination": "/index.html"
     }
