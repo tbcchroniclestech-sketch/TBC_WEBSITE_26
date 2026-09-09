@@ -28,6 +28,7 @@ import instagramPosts from "./data/tbc_instagram_posts_full.json";
 import { SEO } from "./components/SEO";
 import { BlogPage } from "./pages/Blog";
 import { BlogPostPage } from "./pages/BlogPost";
+import { initializeGA4RouteTracking } from "./utils/ga4";
 import "./styles.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -1426,6 +1427,10 @@ function App() {
   const heroY = useTransform(scrollYProgress, [0, 0.35], [0, -120]);
   const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
   const blogSlug = currentPath.startsWith("/blog/") ? decodeURIComponent(currentPath.replace("/blog/", "")) : "";
+
+  useEffect(() => {
+    return initializeGA4RouteTracking();
+  }, []);
 
   useEffect(() => {
     const lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
