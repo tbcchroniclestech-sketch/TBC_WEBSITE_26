@@ -13,9 +13,12 @@ const templatePath = path.join(distDir, "index.html");
 
 const siteUrl = "https://www.thebarodachronicles.com";
 const siteName = "The Baroda Chronicles";
+const siteAlternateName = "TBC";
+const contactEmail = "info@thebarodachronicles.com";
 const brandDescription =
   "TBC - The Baroda Chronicles. Stories, satire, and sketches about real life. Simple, honest, and sometimes too real.";
 const fallbackImage = "/assets/tbc-logo-official.png";
+const socialProfiles = ["https://www.instagram.com/the.baroda.chronicles/", "https://www.youtube.com/@TheBarodaChronicles"];
 
 function loadBlogs() {
   const source = fs.readFileSync(srcBlogDataPath, "utf8");
@@ -51,6 +54,56 @@ function absoluteUrl(pathOrUrl = "/") {
   return `${siteUrl}${pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`}`;
 }
 
+function createOrganizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${siteUrl}/#organization`,
+    name: siteName,
+    alternateName: siteAlternateName,
+    url: siteUrl,
+    logo: absoluteUrl(fallbackImage),
+    description: "Stories, satire, and sketches about real life. Simple, honest, and sometimes too real.",
+    email: contactEmail,
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "business inquiries",
+      email: contactEmail,
+      url: `${siteUrl}/#contact`,
+    },
+    sameAs: socialProfiles,
+  };
+}
+
+function createWebSiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${siteUrl}/#website`,
+    name: siteName,
+    alternateName: siteAlternateName,
+    url: siteUrl,
+    description: "Stories, satire, and sketches about real life. Simple, honest, and sometimes too real.",
+    inLanguage: "en",
+    publisher: {
+      "@id": `${siteUrl}/#organization`,
+    },
+  };
+}
+
+function createBreadcrumbSchema(items) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: absoluteUrl(item.url),
+    })),
+  };
+}
+
 function cleanHead(html) {
   return html
     .replace(/<title>[\s\S]*?<\/title>\s*/gi, "")
@@ -59,21 +112,10 @@ function cleanHead(html) {
     .replace(/\s*<script\s+type=["']application\/ld\+json["'][\s\S]*?<\/script>\s*/gi, "");
 }
 
-function renderHead({ title, description, url, image = fallbackImage, type = "website", keywords = [], article, schema = [] }) {
+function renderHead({ title, description, url, image = fallbackImage, type = "website", keywords = [], robots = "index, follow", article, schema = [] }) {
   const canonical = absoluteUrl(url);
   const imageUrl = absoluteUrl(image);
-  const schemas = [
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      name: siteName,
-      url: siteUrl,
-      logo: absoluteUrl(fallbackImage),
-      description: "Stories, satire, and sketches about real life. Simple, honest, and sometimes too real.",
-      sameAs: ["https://www.instagram.com/the.baroda.chronicles/", "https://www.youtube.com/@TheBarodaChronicles"],
-    },
-    ...schema,
-  ];
+  const schemas = [createOrganizationSchema(), createWebSiteSchema(), ...schema];
 
   const articleTags = article
     ? [
@@ -88,7 +130,7 @@ function renderHead({ title, description, url, image = fallbackImage, type = "we
   return `    <title>${escapeHtml(title)}</title>
     <meta name="description" content="${escapeHtml(description)}" />
     <meta name="author" content="${escapeHtml(siteName)}" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="${escapeHtml(robots)}" />
     ${keywords.length ? `<meta name="keywords" content="${escapeHtml(keywords.join(", "))}" />` : ""}
     <link rel="canonical" href="${escapeHtml(canonical)}" />
     <meta property="og:site_name" content="${escapeHtml(siteName)}" />
@@ -128,6 +170,10 @@ function renderBlock(block) {
 
 function renderBlogListing(blogs) {
   return `<main class="seo-prerender" aria-label="Blog listing">
+    <nav aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span>Blog</span>
+    </nav>
     <h1>Stories, Strategies &amp; Ideas</h1>
     <p>Explore marketing insights, creative strategies, and industry knowledge from our team.</p>
     <nav aria-label="Blog posts">
@@ -149,6 +195,11 @@ function renderBlogListing(blogs) {
 
 function renderBlogArticle(blog, relatedBlogs) {
   return `<main class="seo-prerender" aria-label="Blog article">
+    <nav aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <a href="/blog">Blog</a>
+      <span>${escapeHtml(blog.title)}</span>
+    </nav>
     <article>
       <img src="${escapeHtml(blog.banner)}" alt="${escapeHtml(blog.imageAlt || `${blog.title} featured image`)}" />
       <span>${escapeHtml(blog.category)}</span>
@@ -169,9 +220,58 @@ function renderHome() {
     <h1>Internet culture, filmed with a city-sized side eye.</h1>
     <p>${escapeHtml(brandDescription)}</p>
     <nav aria-label="Important pages">
+      <a href="/about">About</a>
       <a href="/blog">Blog</a>
       <a href="/#work">Work</a>
-      <a href="/#contact">Contact</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </main>`;
+}
+
+function renderAbout() {
+  return `<main class="seo-prerender" aria-label="About The Baroda Chronicles">
+    <nav aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span>About</span>
+    </nav>
+    <h1>The people behind the stories.</h1>
+    <p>The Baroda Chronicles is powered by a multidisciplinary team that brings together strategy, creativity, technology, production and social media under one roof.</p>
+    <p>TBC - The Baroda Chronicles creates stories, satire, sketches and social-first brand work about real life. Simple, honest and sometimes too real.</p>
+    <nav aria-label="About page links">
+      <a href="/blog">Blog</a>
+      <a href="/contact">Contact TBC</a>
+    </nav>
+  </main>`;
+}
+
+function renderContact() {
+  return `<main class="seo-prerender" aria-label="Contact The Baroda Chronicles">
+    <nav aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span>Contact</span>
+    </nav>
+    <h1>Contact The Baroda Chronicles</h1>
+    <p>Contact The Baroda Chronicles for brand campaigns, content production, social media, UGC, creative strategy and digital growth.</p>
+    <address>
+      <a href="mailto:${escapeHtml(contactEmail)}">${escapeHtml(contactEmail)}</a>
+      <a href="https://www.instagram.com/the.baroda.chronicles/">Instagram</a>
+      <a href="https://www.youtube.com/@TheBarodaChronicles">YouTube</a>
+    </address>
+  </main>`;
+}
+
+function renderNotFound() {
+  return `<main class="seo-prerender" aria-label="Page not found">
+    <nav aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span>Page Not Found</span>
+    </nav>
+    <h1>Page not found.</h1>
+    <p>That URL does not match a live TBC page.</p>
+    <nav aria-label="404 page links">
+      <a href="/">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="/contact">Contact</a>
     </nav>
   </main>`;
 }
@@ -190,7 +290,9 @@ function writeSitemap(blogs) {
     .at(-1);
   const urls = [
     { loc: `${siteUrl}/`, lastmod: maxDate || "2026-09-08", changefreq: "weekly", priority: "1.0" },
+    { loc: `${siteUrl}/about`, lastmod: maxDate || "2026-09-08", changefreq: "monthly", priority: "0.7" },
     { loc: `${siteUrl}/blog`, lastmod: maxDate || "2026-09-08", changefreq: "weekly", priority: "0.8" },
+    { loc: `${siteUrl}/contact`, lastmod: maxDate || "2026-09-08", changefreq: "monthly", priority: "0.7" },
     ...blogs.map((blog) => ({
       loc: `${siteUrl}/blog/${blog.slug}`,
       lastmod: blog.dateModified || blog.datePublished,
@@ -255,6 +357,43 @@ writeRoute(
 );
 
 writeRoute(
+  "/about",
+  applyDocument({
+    template,
+    head:
+      hiddenPrerenderStyle +
+      renderHead({
+        title: "About The Baroda Chronicles | TBC",
+        description: "Meet The Baroda Chronicles, a Baroda/Vadodara creative production house creating stories, satire, sketches, campaigns and social-first brand work.",
+        url: "/about",
+        image: "/assets/tbc-team-photo.jpeg",
+        keywords: ["The Baroda Chronicles", "TBC", "Baroda creative agency", "Vadodara content agency", "creative production house"],
+        schema: [
+          {
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            name: "About The Baroda Chronicles",
+            url: absoluteUrl("/about"),
+            description:
+              "The Baroda Chronicles is a Baroda/Vadodara creative production house and digital growth partner creating stories, satire, sketches, campaigns and social-first content.",
+            isPartOf: {
+              "@id": `${siteUrl}/#website`,
+            },
+            about: {
+              "@id": `${siteUrl}/#organization`,
+            },
+          },
+          createBreadcrumbSchema([
+            { name: "Home", url: "/" },
+            { name: "About", url: "/about" },
+          ]),
+        ],
+      }),
+    body: renderAbout(),
+  }),
+);
+
+writeRoute(
   "/blog",
   applyDocument({
     template,
@@ -273,6 +412,9 @@ writeRoute(
             name: "Stories, Strategies & Ideas",
             url: absoluteUrl("/blog"),
             description: "Explore marketing insights, creative strategies, and industry knowledge from The Baroda Chronicles.",
+            publisher: {
+              "@id": `${siteUrl}/#organization`,
+            },
             blogPost: blogs.map((blog) => ({
               "@type": "BlogPosting",
               headline: blog.seoTitle || blog.title,
@@ -281,9 +423,49 @@ writeRoute(
               dateModified: blog.dateModified || blog.datePublished,
             })),
           },
+          createBreadcrumbSchema([
+            { name: "Home", url: "/" },
+            { name: "Blog", url: "/blog" },
+          ]),
         ],
       }),
     body: renderBlogListing(blogs),
+  }),
+);
+
+writeRoute(
+  "/contact",
+  applyDocument({
+    template,
+    head:
+      hiddenPrerenderStyle +
+      renderHead({
+        title: "Contact The Baroda Chronicles | TBC",
+        description: "Contact The Baroda Chronicles for brand campaigns, content production, social media, UGC, creative strategy and digital growth.",
+        url: "/contact",
+        image: fallbackImage,
+        keywords: ["contact The Baroda Chronicles", "TBC contact", "Baroda creative agency", "Vadodara social media agency"],
+        schema: [
+          {
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            name: "Contact The Baroda Chronicles",
+            url: absoluteUrl("/contact"),
+            description: "Contact The Baroda Chronicles for brand campaigns, content production, social media, UGC and creative strategy.",
+            isPartOf: {
+              "@id": `${siteUrl}/#website`,
+            },
+            mainEntity: {
+              "@id": `${siteUrl}/#organization`,
+            },
+          },
+          createBreadcrumbSchema([
+            { name: "Home", url: "/" },
+            { name: "Contact", url: "/contact" },
+          ]),
+        ],
+      }),
+    body: renderContact(),
   }),
 );
 
@@ -321,10 +503,12 @@ for (const blog of blogs) {
               image: absoluteUrl(blog.banner),
               author: {
                 "@type": "Organization",
+                "@id": `${siteUrl}/#organization`,
                 name: siteName,
               },
               publisher: {
                 "@type": "Organization",
+                "@id": `${siteUrl}/#organization`,
                 name: siteName,
                 logo: {
                   "@type": "ImageObject",
@@ -338,13 +522,44 @@ for (const blog of blogs) {
                 "@id": absoluteUrl(blogUrl),
               },
               url: absoluteUrl(blogUrl),
+              isPartOf: {
+                "@id": `${siteUrl}/#website`,
+              },
             },
+            createBreadcrumbSchema([
+              { name: "Home", url: "/" },
+              { name: "Blog", url: "/blog" },
+              { name: blog.title, url: blogUrl },
+            ]),
           ],
         }),
       body: renderBlogArticle(blog, related),
     }),
   );
 }
+
+fs.writeFileSync(
+  path.join(distDir, "404.html"),
+  applyDocument({
+    template,
+    head:
+      hiddenPrerenderStyle +
+      renderHead({
+        title: "Page Not Found | The Baroda Chronicles",
+        description: "This page could not be found. Explore The Baroda Chronicles homepage, blog, about page or contact page.",
+        url: "/404",
+        image: fallbackImage,
+        robots: "noindex, follow",
+        schema: [
+          createBreadcrumbSchema([
+            { name: "Home", url: "/" },
+            { name: "Page Not Found", url: "/404" },
+          ]),
+        ],
+      }),
+    body: renderNotFound(),
+  }),
+);
 
 writeSitemap(blogs);
 writeRobots();

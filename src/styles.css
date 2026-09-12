@@ -3114,14 +3114,16 @@ h1 span {
 }
 
 .blog-page,
-.blog-post-page {
+.blog-post-page,
+.entity-page {
   position: relative;
   min-height: 100vh;
   padding-top: 116px;
 }
 
 .blog-page::before,
-.blog-post-page::before {
+.blog-post-page::before,
+.entity-page::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -3158,6 +3160,34 @@ h1 span {
   color: rgba(23, 23, 23, 0.68);
   font-size: clamp(1.06rem, 1.4vw, 1.2rem);
   line-height: 1.58;
+}
+
+.breadcrumb-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: 22px;
+  color: rgba(23, 23, 23, 0.52);
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.breadcrumb-nav a {
+  color: rgba(23, 23, 23, 0.68);
+  transition: color 220ms ease;
+}
+
+.breadcrumb-nav a:hover,
+.breadcrumb-nav a:focus-visible {
+  color: var(--pink);
+}
+
+.breadcrumb-nav-centered {
+  justify-content: center;
+  margin: -18px auto clamp(26px, 4vw, 42px);
 }
 
 .blog-grid {
@@ -3554,6 +3584,205 @@ h1 span {
   margin-bottom: 26px;
 }
 
+.blog-related {
+  display: grid;
+  width: min(860px, 100%);
+  gap: 18px;
+  margin: clamp(58px, 8vw, 92px) auto 0;
+}
+
+.blog-related h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+}
+
+.blog-related > div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.blog-related a,
+.entity-card,
+.entity-pill,
+.entity-contact-panel {
+  border: 1px solid rgba(255, 255, 255, 0.56);
+  background:
+    radial-gradient(circle at 18% 10%, rgba(216, 78, 125, 0.1), transparent 34%),
+    rgba(255, 255, 255, 0.32);
+  box-shadow: 0 24px 70px rgba(23, 23, 23, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(18px);
+}
+
+.blog-related a {
+  display: grid;
+  gap: 10px;
+  min-height: 170px;
+  padding: 22px;
+  border-radius: 28px;
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), border-color 280ms ease, box-shadow 280ms ease;
+}
+
+.blog-related a:hover,
+.blog-related a:focus-visible {
+  border-color: rgba(216, 78, 125, 0.32);
+  box-shadow: 0 30px 82px rgba(23, 23, 23, 0.12), 0 0 36px rgba(216, 78, 125, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.66);
+  transform: translate3d(0, -5px, 0);
+}
+
+.blog-related span {
+  color: var(--pink);
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.blog-related strong {
+  color: var(--ink);
+  font-size: clamp(1.15rem, 1.7vw, 1.45rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.entity-hero {
+  display: grid;
+  justify-items: start;
+  width: min(1080px, calc(100% - 36px));
+  margin: 0 auto;
+  padding: clamp(70px, 8vw, 118px) 0 clamp(42px, 6vw, 74px);
+}
+
+.entity-hero h1 {
+  max-width: 980px;
+  margin-bottom: 24px;
+  font-size: clamp(3.2rem, 7vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  font-weight: 950;
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  text-wrap: balance;
+}
+
+.entity-hero > p:last-child,
+.entity-muted {
+  max-width: 720px;
+  margin: 0;
+  color: rgba(23, 23, 23, 0.68);
+  font-size: clamp(1.06rem, 1.4vw, 1.2rem);
+  line-height: 1.58;
+}
+
+.entity-split,
+.entity-grid,
+.entity-cta,
+.entity-contact-panel {
+  width: min(1080px, calc(100% - 36px));
+  margin: 0 auto;
+}
+
+.entity-split {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 18px;
+}
+
+.entity-card {
+  min-height: 330px;
+  border-radius: 34px;
+  padding: clamp(24px, 4vw, 42px);
+}
+
+.entity-card-dark {
+  color: var(--cream);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(216, 78, 125, 0.28), transparent 38%),
+    var(--ink);
+}
+
+.entity-card span {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--pink);
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.entity-card h2,
+.entity-cta h2 {
+  margin: 0 0 18px;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 0.94;
+  letter-spacing: -0.045em;
+  font-weight: 950;
+  text-wrap: balance;
+}
+
+.entity-card p {
+  max-width: 620px;
+  margin: 0;
+  color: rgba(23, 23, 23, 0.66);
+  font-size: 1.04rem;
+  line-height: 1.65;
+}
+
+.entity-card-dark p {
+  color: rgba(251, 248, 242, 0.72);
+}
+
+.entity-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.entity-pill {
+  min-height: 92px;
+  border-radius: 24px;
+  padding: 22px;
+  color: var(--ink);
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+.entity-cta {
+  display: grid;
+  gap: 20px;
+  padding: clamp(70px, 9vw, 110px) 0 clamp(92px, 10vw, 140px);
+  text-align: center;
+  justify-items: center;
+}
+
+.entity-cta h2 {
+  max-width: 900px;
+}
+
+.entity-cta > div,
+.not-found-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.entity-contact-panel {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: clamp(92px, 10vw, 140px);
+  border-radius: 36px;
+  padding: clamp(18px, 3vw, 28px);
+  background:
+    radial-gradient(circle at 82% 20%, rgba(216, 78, 125, 0.42), transparent 24rem),
+    var(--ink);
+  color: var(--cream);
+}
+
 .comment-cloud {
   position: relative;
   display: flex;
@@ -3807,6 +4036,22 @@ footer {
 
 footer strong {
   color: var(--ink);
+}
+
+footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+footer nav a {
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+footer nav a:hover,
+footer nav a:focus-visible {
+  color: var(--pink);
 }
 
 @media (max-width: 920px) {
@@ -4096,7 +4341,8 @@ footer strong {
   }
 
   .blog-page,
-  .blog-post-page {
+  .blog-post-page,
+  .entity-page {
     padding-top: 92px;
   }
 
@@ -4111,6 +4357,17 @@ footer strong {
   .blog-content blockquote,
   .blog-highlight {
     border-radius: 22px;
+  }
+
+  .blog-related > div,
+  .entity-split,
+  .entity-grid,
+  .entity-contact-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .entity-hero {
+    padding-top: 54px;
   }
 
   .youtube-actions {

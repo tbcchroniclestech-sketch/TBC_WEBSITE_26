@@ -2,9 +2,12 @@ import { Helmet } from "react-helmet-async";
 
 const siteUrl = "https://www.thebarodachronicles.com";
 const siteName = "The Baroda Chronicles";
+const siteAlternateName = "TBC";
+const contactEmail = "info@thebarodachronicles.com";
 const brandDescription =
   "Stories, satire, and sketches about real life. Simple, honest, and sometimes too real.";
 const fallbackImage = "/assets/tbc-logo-official.png";
+const socialProfiles = ["https://www.instagram.com/the.baroda.chronicles/", "https://www.youtube.com/@TheBarodaChronicles"];
 
 type ArticleMeta = {
   publishedTime?: string;
@@ -20,6 +23,7 @@ type SEOProps = {
   image?: string;
   url?: string;
   keywords?: string[];
+  robots?: string;
   type?: "website" | "article";
   article?: ArticleMeta;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
@@ -35,11 +39,49 @@ export function createOrganizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${siteUrl}/#organization`,
     name: siteName,
+    alternateName: siteAlternateName,
     url: siteUrl,
     logo: absoluteUrl(fallbackImage),
     description: brandDescription,
-    sameAs: ["https://www.instagram.com/the.baroda.chronicles/", "https://www.youtube.com/@TheBarodaChronicles"],
+    email: contactEmail,
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "business inquiries",
+      email: contactEmail,
+      url: `${siteUrl}/#contact`,
+    },
+    sameAs: socialProfiles,
+  };
+}
+
+export function createWebSiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${siteUrl}/#website`,
+    name: siteName,
+    alternateName: siteAlternateName,
+    url: siteUrl,
+    description: brandDescription,
+    inLanguage: "en",
+    publisher: {
+      "@id": `${siteUrl}/#organization`,
+    },
+  };
+}
+
+export function createBreadcrumbSchema(items: Array<{ name: string; url: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: absoluteUrl(item.url),
+    })),
   };
 }
 
@@ -49,13 +91,14 @@ export function SEO({
   image = fallbackImage,
   url = "/",
   keywords = [],
+  robots = "index, follow",
   type = "website",
   article,
   jsonLd,
 }: SEOProps) {
   const canonicalUrl = absoluteUrl(url);
   const imageUrl = absoluteUrl(image);
-  const schemas = [createOrganizationSchema(), ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [])];
+  const schemas = [createOrganizationSchema(), createWebSiteSchema(), ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [])];
 
   return (
     <Helmet>
@@ -63,7 +106,7 @@ export function SEO({
       <meta name="description" content={description} />
       {keywords.length > 0 ? <meta name="keywords" content={keywords.join(", ")} /> : null}
       <meta name="author" content={siteName} />
-      <meta name="robots" content="index, follow" />
+      <meta name="robots" content={robots} />
       <link rel="canonical" href={canonicalUrl} />
 
       <meta property="og:site_name" content={siteName} />
@@ -92,7 +135,10 @@ export function SEO({
 export const seoConfig = {
   siteUrl,
   siteName,
+  siteAlternateName,
+  contactEmail,
   brandDescription,
   fallbackImage,
+  socialProfiles,
   absoluteUrl,
 };

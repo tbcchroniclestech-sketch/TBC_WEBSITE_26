@@ -28,6 +28,10 @@ import instagramPosts from "./data/tbc_instagram_posts_full.json";
 import { SEO } from "./components/SEO";
 import { BlogPage } from "./pages/Blog";
 import { BlogPostPage } from "./pages/BlogPost";
+import { AboutPage } from "./pages/About";
+import { ContactPage } from "./pages/Contact";
+import { NotFoundPage } from "./pages/NotFound";
+import { getBlogBySlug } from "./data/blogs";
 import { initializeGA4RouteTracking } from "./utils/ga4";
 import "./styles.css";
 
@@ -1427,6 +1431,7 @@ function App() {
   const heroY = useTransform(scrollYProgress, [0, 0.35], [0, -120]);
   const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
   const blogSlug = currentPath.startsWith("/blog/") ? decodeURIComponent(currentPath.replace("/blog/", "")) : "";
+  const activeBlog = blogSlug ? getBlogBySlug(blogSlug) : undefined;
 
   useEffect(() => {
     return initializeGA4RouteTracking();
@@ -1522,17 +1527,21 @@ function App() {
         </a>
         <nav>
           <a href="/#work">Work</a>
-          <a href="/#social">Social Proof</a>
+          <a href="/about">About</a>
           <a href="/blog">Blog</a>
-          <a href="/#contact">Contact</a>
+          <a href="/contact">Contact</a>
         </nav>
       </header>
 
       {currentPath === "/blog" ? (
         <BlogPage />
-      ) : blogSlug ? (
+      ) : currentPath === "/about" ? (
+        <AboutPage />
+      ) : currentPath === "/contact" ? (
+        <ContactPage />
+      ) : blogSlug && activeBlog ? (
         <BlogPostPage slug={blogSlug} />
-      ) : (
+      ) : currentPath === "/" ? (
       <main id="top">
         <section className="hero">
           <motion.div className="hero-copy" style={{ y: heroY }}>
@@ -1714,10 +1723,17 @@ function App() {
           </div>
         </section>
       </main>
+      ) : (
+        <NotFoundPage path={currentPath} />
       )}
 
       <footer>
         <strong>The Baroda Chronicles</strong>
+        <nav aria-label="Footer navigation">
+          <a href="/about">About</a>
+          <a href="/blog">Blog</a>
+          <a href="/contact">Contact</a>
+        </nav>
         <span>Films / Reels / Campaigns / Social chaos / 20-26</span>
       </footer>
     </>

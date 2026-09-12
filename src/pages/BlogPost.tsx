@@ -1,7 +1,7 @@
 import { ArrowLeft, Clock, CalendarDays } from "lucide-react";
 import { motion } from "framer-motion";
-import { SEO, seoConfig } from "../components/SEO";
-import { getBlogBySlug, type BlogContentBlock } from "../data/blogs";
+import { SEO, createBreadcrumbSchema, seoConfig } from "../components/SEO";
+import { blogs, getBlogBySlug, type BlogContentBlock } from "../data/blogs";
 
 function InlineText({ text }: { text: string }) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -64,6 +64,7 @@ export function BlogPostPage({ slug }: { slug: string }) {
   const seoTitle = `${blog.seoTitle || blog.title} | The Baroda Chronicles`;
   const seoDescription = blog.seoDescription || blog.description;
   const blogUrl = `/blog/${blog.slug}`;
+  const relatedBlogs = blogs.filter((item) => item.slug !== blog.slug).slice(0, 3);
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -72,10 +73,12 @@ export function BlogPostPage({ slug }: { slug: string }) {
     image: seoConfig.absoluteUrl(blog.banner),
     author: {
       "@type": "Organization",
+      "@id": `${seoConfig.siteUrl}/#organization`,
       name: seoConfig.siteName,
     },
     publisher: {
       "@type": "Organization",
+      "@id": `${seoConfig.siteUrl}/#organization`,
       name: seoConfig.siteName,
       logo: {
         "@type": "ImageObject",
@@ -89,7 +92,15 @@ export function BlogPostPage({ slug }: { slug: string }) {
       "@id": seoConfig.absoluteUrl(blogUrl),
     },
     url: seoConfig.absoluteUrl(blogUrl),
+    isPartOf: {
+      "@id": `${seoConfig.siteUrl}/#website`,
+    },
   };
+  const breadcrumbSchema = createBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Blog", url: "/blog" },
+    { name: blog.title, url: blogUrl },
+  ]);
 
   return (
     <main className="blog-post-page">
@@ -107,7 +118,7 @@ export function BlogPostPage({ slug }: { slug: string }) {
           section: blog.category,
           tags: blog.keywords,
         }}
-        jsonLd={articleSchema}
+        jsonLd={[articleSchema, breadcrumbSchema]}
       />
       <motion.article
         className="blog-article"
@@ -119,6 +130,13 @@ export function BlogPostPage({ slug }: { slug: string }) {
           <ArrowLeft size={17} />
           Back to Blog
         </a>
+        <nav className="breadcrumb-nav" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <span>/</span>
+          <a href="/blog">Blog</a>
+          <span>/</span>
+          <span>{blog.title}</span>
+        </nav>
         <div className="blog-article-banner">
           <img src={blog.banner} alt={blog.imageAlt || `${blog.title} featured image`} />
         </div>
@@ -142,6 +160,18 @@ export function BlogPostPage({ slug }: { slug: string }) {
             <ArticleBlock block={block} key={`${block.type}-${index}`} />
           ))}
         </div>
+        <nav className="blog-related" aria-label="Related blog posts">
+          <p className="section-kicker">Related Insights</p>
+          <h2>Keep reading</h2>
+          <div>
+            {relatedBlogs.map((item) => (
+              <a href={`/blog/${item.slug}`} key={item.id}>
+                <span>{item.category}</span>
+                <strong>{item.title}</strong>
+              </a>
+            ))}
+          </div>
+        </nav>
       </motion.article>
     </main>
   );
