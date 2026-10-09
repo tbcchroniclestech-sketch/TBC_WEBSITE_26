@@ -1,0 +1,897 @@
+/*
+ * TBC Vinyl Turntable — styles for the final approved design.
+ * Every selector is scoped to the player (.premium-turntable / .premium-*).
+ *
+ * LAYOUT SYSTEM
+ *   .premium-turntable       Outer wrapper. Fixed aspect ratio (reference body: 1185 × 1169) and a
+ *                            CSS size container ("tbc-deck"). --u = 1% of the cream body's width,
+ *                            so every size below scales with the player, never with the viewport.
+ *   .premium-turntable-body  The cream body: a CSS GRID whose named lines are measured from the
+ *                            reference image (as % of the body). Each part is placed on those lines:
+ *
+ *        x: 4%      6.1%  7.4%        24.7%                 75%   80.1% 84.3%   94.4% 95.4%
+ *           |transp.|power|record ......|transport-r .. 1fr ..|arm-l|rec-r|volume-l|vol-r|arm-r
+ *        y: 5.7% power · 7.2% arm · 13.9% record · 28.7% arm-b · 38.9% volume
+ *           85.6% transport · 87.7% record-b · 91.1% volume-b · 94.8% transport-b
+ *
+ *   On phones the volume panel keeps a 40px minimum: it first grows into the record↔panel gap
+ *   (never below 2%), and only then takes space from the `1fr` column, shrinking the record (sized
+ *   to its grid area, aspect 1:1). The transport row's minimum is absorbed by the `1fr` column
+ *   without touching the record. So nothing can collide or escape the body.
+ *   Absolute positioning is used only for genuine details: the record's layered surface, the
+ *   tonearm (rotates about its pivot), the knob's arc, and the moving volume fill/thumb.
+ *
+ * The 3D tilt needs a parent with `perspective` (the site's .hero-stage uses 1200px).
+ */
+
+.premium-turntable,
+.premium-turntable *,
+.premium-turntable *::before,
+.premium-turntable *::after {
+  box-sizing: border-box;
+}
+
+.premium-turntable {
+  --tt-pink: #f0347f;
+  --tt-pink-glow: rgba(240, 52, 127, 0.5);
+  --tt-ink: #111;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --magnet-x: 0px;
+  --magnet-y: 0px;
+  --spot-x: 50%;
+  --spot-y: 50%;
+  --volume-fill: 75%;
+  --volume-y: 25%;
+  /* 1% of the cream body's width (body = 96% of this wrapper) */
+  --u: 0.96cqw;
+  position: relative;
+  width: min(660px, 47vw);
+  min-width: 0;
+  aspect-ratio: 1185 / 1169;
+  flex: none;
+  container: tbc-deck / inline-size;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  outline: none;
+  animation: premiumDeckFloat 7s ease-in-out infinite;
+  transform: translate3d(var(--magnet-x), var(--magnet-y), 0) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.premium-turntable img {
+  display: block;
+  max-width: 100%;
+}
+
+.premium-turntable:focus-visible .premium-turntable-body {
+  outline: 3px solid rgba(240, 52, 127, 0.45);
+  outline-offset: 3px;
+}
+
+.premium-turntable.is-off {
+  filter: saturate(0.9);
+}
+
+/* soft warm shadow under the deck */
+.premium-turntable-glow {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -3%;
+  height: 12%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(200, 120, 130, 0.3), rgba(200, 120, 130, 0.1) 45%, transparent 72%);
+  filter: blur(22px);
+  transform: translateZ(-80px);
+  pointer-events: none;
+}
+
+/* ================================================================== body (layout grid) */
+.premium-turntable-body {
+  position: absolute;
+  inset: 2%;
+  display: grid;
+  grid-template-columns:
+    [edge-l] 4%
+    [transport-l] 2.1%
+    [power-l] 1.3%
+    [record-l] max(17.3%, calc(var(--ctrl-row-min, 0px) - 3.4%))
+    [transport-r] 1fr
+    [arm-l] 5.1%
+    [record-r] max(2%, calc(14.3% - max(10.1%, var(--volume-min, 0px))))
+    [volume-l] max(10.1%, var(--volume-min, 0px))
+    [volume-r] 1%
+    [arm-r] 4.6%
+    [edge-r];
+  grid-template-rows:
+    [top] 5.7%
+    [power-t] 1.5%
+    [arm-t] 6.7%
+    [record-t] 14.8%
+    [arm-b] 10.2%
+    [volume-t] 46.7%
+    [transport-t] 2.1%
+    [record-b] 3.4%
+    [volume-b] 3.7%
+    [transport-b] 1fr
+    [bottom];
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: calc(5 * var(--u));
+  background:
+    radial-gradient(circle at var(--spot-x) var(--spot-y), rgba(255, 255, 255, 0.3), transparent 26%),
+    radial-gradient(circle at 16% 8%, rgba(255, 255, 255, 0.85), transparent 32%),
+    linear-gradient(160deg, #f8f6f1 0%, #f2eee7 50%, #ebe5dc 100%);
+  box-shadow:
+    inset 0 2px 6px rgba(255, 255, 255, 0.9),
+    inset 0 -14px 30px rgba(90, 70, 50, 0.06),
+    0 40px 80px rgba(60, 40, 25, 0.15),
+    0 14px 28px rgba(160, 90, 100, 0.1);
+  transform: translateZ(24px);
+}
+
+.premium-turntable-body > * {
+  min-width: 0;
+  min-height: 0;
+}
+
+.premium-turntable-body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.2;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* ================================================================== record */
+.premium-record {
+  --record-angle: 0deg;
+  grid-column: record-l / record-r;
+  grid-row: record-t / record-b;
+  align-self: start;
+  justify-self: start;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-height: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  cursor: pointer;
+  touch-action: none;
+  outline: none;
+  background:
+    repeating-radial-gradient(circle at 50% 50%, #0b0b0b 0 calc(0.18 * var(--u)), #161616 calc(0.18 * var(--u)) calc(0.32 * var(--u))),
+    #0b0b0b;
+  box-shadow:
+    inset 0 0 0 calc(0.35 * var(--u)) rgba(255, 255, 255, 0.035),
+    inset 0 0 calc(3 * var(--u)) rgba(0, 0, 0, 0.6),
+    calc(-1.2 * var(--u)) calc(1.8 * var(--u)) calc(3 * var(--u)) rgba(40, 25, 15, 0.28),
+    0 calc(0.6 * var(--u)) calc(1.2 * var(--u)) rgba(40, 25, 15, 0.18);
+  transform: rotate(0deg) translateZ(0);
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.premium-turntable.is-scrubbing .premium-record {
+  cursor: grabbing;
+}
+
+.premium-turntable.is-off .premium-record {
+  cursor: default;
+}
+
+/* keyboard focus on the record (it is the play/pause control) */
+.premium-record:focus-visible {
+  box-shadow:
+    0 0 0 3px #fff,
+    0 0 0 6px var(--tt-pink),
+    calc(-1.2 * var(--u)) calc(1.8 * var(--u)) calc(3 * var(--u)) rgba(40, 25, 15, 0.28);
+}
+
+.premium-record-grooves,
+.premium-record-reflection {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* the visible concentric rings */
+.premium-record-grooves {
+  inset: 3%;
+  background: repeating-radial-gradient(
+    circle at 50% 50%,
+    transparent 0 calc(1.55 * var(--u)),
+    rgba(255, 255, 255, 0.1) calc(1.55 * var(--u)) calc(1.68 * var(--u)),
+    transparent calc(1.68 * var(--u)) calc(1.9 * var(--u))
+  );
+  -webkit-mask: radial-gradient(circle, transparent 0 34%, #000 35%);
+  mask: radial-gradient(circle, transparent 0 34%, #000 35%);
+}
+
+/* fixed light on the lacquer: counter-rotated so it stays put while the record turns */
+.premium-record-reflection {
+  background: conic-gradient(
+    from calc(var(--record-angle) * -1),
+    transparent 0deg,
+    rgba(255, 255, 255, 0.12) 26deg,
+    rgba(255, 255, 255, 0.2) 48deg,
+    rgba(255, 255, 255, 0.12) 70deg,
+    transparent 100deg,
+    transparent 180deg,
+    rgba(255, 255, 255, 0.1) 206deg,
+    rgba(255, 255, 255, 0.16) 228deg,
+    rgba(255, 255, 255, 0.1) 250deg,
+    transparent 280deg,
+    transparent 360deg
+  );
+  -webkit-mask: radial-gradient(circle, transparent 0 33%, #000 36%);
+  mask: radial-gradient(circle, transparent 0 33%, #000 36%);
+}
+
+.premium-record-label {
+  position: absolute;
+  inset: 34.6%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 26%, rgba(255, 255, 255, 0.9), transparent 30%),
+    linear-gradient(150deg, #f7f3ec, #ece6dc);
+  box-shadow:
+    inset 0 0 calc(1.4 * var(--u)) rgba(60, 40, 20, 0.1),
+    0 0 0 calc(0.25 * var(--u)) rgba(0, 0, 0, 0.55);
+}
+
+.premium-tbc-logo {
+  display: grid;
+  place-items: center;
+  width: 84%;
+  height: 84%;
+}
+
+.premium-tbc-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+.premium-spindle {
+  position: absolute;
+  inset: 48.5%;
+  z-index: 3;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, #ffffff, #c9c6c0 38%, #6b6966 75%, #2a2928);
+  box-shadow: 0 calc(0.25 * var(--u)) calc(0.6 * var(--u)) rgba(0, 0, 0, 0.45);
+}
+
+/* ================================================================== tonearm */
+.premium-tonearm-base {
+  grid-column: arm-l / arm-r;
+  grid-row: arm-t / arm-b;
+  justify-self: end;
+  align-self: start;
+  position: relative;
+  z-index: 4;
+  width: calc(20.3 * var(--u));
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #1b1a18 0 30%, #0e0d0c 31% 62%, #1d1b19 63% 100%);
+  box-shadow:
+    inset 0 0 0 calc(0.3 * var(--u)) rgba(255, 255, 255, 0.05),
+    inset 0 calc(0.4 * var(--u)) calc(1 * var(--u)) rgba(255, 255, 255, 0.06),
+    0 calc(1.6 * var(--u)) calc(3 * var(--u)) rgba(40, 25, 15, 0.25);
+  pointer-events: none;
+}
+
+.premium-tonearm-base::before,
+.premium-tonearm-base::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.premium-tonearm-base::before {
+  inset: 9%;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* small anti-skate knob */
+.premium-tonearm-base::after {
+  right: 9%;
+  top: 40%;
+  width: 17%;
+  height: 17%;
+  background: radial-gradient(circle at 34% 26%, #4d4844, #0b0b0b 70%);
+  box-shadow: 0 calc(0.6 * var(--u)) calc(1 * var(--u)) rgba(0, 0, 0, 0.35);
+}
+
+.premium-tonearm-pivot {
+  position: absolute;
+  inset: 31%;
+  z-index: 2;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 28%, #45413d, #141312 58%, #070707);
+  box-shadow: inset 0 0 0 calc(0.5 * var(--u)) rgba(255, 255, 255, 0.035), 0 calc(0.4 * var(--u)) calc(0.8 * var(--u)) rgba(0, 0, 0, 0.4);
+}
+
+/* the arm rotates about its top end (the pivot); angle is driven from JS */
+.premium-tonearm {
+  position: absolute;
+  left: 45.5%;
+  top: 44%;
+  z-index: 5;
+  width: 9%;
+  height: 326%;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.14), transparent 38% 66%, rgba(0, 0, 0, 0.25)),
+    linear-gradient(180deg, #34312e, #1a1817);
+  box-shadow: calc(1.2 * var(--u)) calc(1.8 * var(--u)) calc(2 * var(--u)) rgba(0, 0, 0, 0.26);
+  transform: translate3d(0, 0, 42px) rotate(26.5deg);
+  transform-origin: 50% 0%;
+  will-change: transform;
+}
+
+.premium-tonearm-counterweight {
+  position: absolute;
+  left: -80%;
+  top: -16%;
+  width: 260%;
+  height: 14%;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16), transparent 45%, rgba(0, 0, 0, 0.3)),
+    linear-gradient(180deg, #3a3633, #121110);
+  box-shadow: 0 calc(0.8 * var(--u)) calc(1.6 * var(--u)) rgba(0, 0, 0, 0.3);
+}
+
+/* cartridge: rounded-square headshell, status LED, stylus */
+.premium-tonearm-head {
+  position: absolute;
+  left: -300%;
+  bottom: -5.5%;
+  width: 400%;
+  height: 10.5%;
+  border-radius: 24%;
+  background:
+    radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.1), transparent 40%),
+    linear-gradient(160deg, #2a2725, #121110);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    calc(0.6 * var(--u)) calc(1 * var(--u)) calc(1.6 * var(--u)) rgba(0, 0, 0, 0.42);
+}
+
+.premium-tonearm-head::before {
+  content: "";
+  position: absolute;
+  left: 24%;
+  top: 30%;
+  width: 11%;
+  height: 30%;
+  border-radius: 999px;
+  background: var(--tt-pink);
+  box-shadow: 0 0 calc(0.8 * var(--u)) rgba(240, 52, 127, 0.7);
+  animation: premiumLedBreath 1.8s ease-in-out infinite;
+}
+
+.premium-turntable.is-playing .premium-tonearm-head::before {
+  background: #2d6bff;
+  box-shadow: 0 0 calc(0.9 * var(--u)) rgba(45, 107, 255, 0.75);
+}
+
+.premium-tonearm-head::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 90%;
+  width: 4.5%;
+  height: 95%;
+  border-radius: 999px;
+  background: #0d0d0d;
+}
+
+/* ================================================================== power */
+.premium-power-control {
+  grid-column: power-l / arm-l;
+  grid-row: power-t / record-t;
+  justify-self: start;
+  align-self: start;
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: max(5px, calc(1.45 * var(--u)));
+  color: var(--tt-ink);
+  font-weight: 900;
+}
+
+/* the arrowed arc above the knob */
+.premium-power-arc {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + max(3px, calc(0.45 * var(--u))));
+  width: max(46px, calc(14 * var(--u)));
+  height: max(8px, calc(2 * var(--u)));
+  border-top: max(1.5px, calc(0.22 * var(--u))) solid var(--tt-ink);
+  border-radius: 50% 50% 0 0;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.premium-power-arc::before,
+.premium-power-arc::after {
+  content: "";
+  position: absolute;
+  top: calc(max(4px, calc(0.85 * var(--u))) * -1.05);
+  width: 0;
+  height: 0;
+  border-top: max(4px, calc(0.85 * var(--u))) solid transparent;
+  border-bottom: max(4px, calc(0.85 * var(--u))) solid transparent;
+}
+
+.premium-power-arc::before {
+  left: -2px;
+  border-right: max(8px, calc(1.9 * var(--u))) solid var(--tt-ink);
+  transform: rotate(-18deg);
+}
+
+.premium-power-arc::after {
+  right: -2px;
+  border-left: max(8px, calc(1.9 * var(--u))) solid var(--tt-ink);
+  transform: rotate(18deg);
+}
+
+.premium-power-control span {
+  flex: none;
+  padding-top: max(3px, calc(0.6 * var(--u)));
+  color: var(--tt-ink);
+  font-size: max(9px, calc(2.5 * var(--u)));
+  line-height: 1;
+  letter-spacing: 0.01em;
+  user-select: none;
+  transition: opacity 320ms ease;
+}
+
+/* power state: knob turns, pink dot dims, the ON label fades */
+.premium-turntable.is-off .premium-power-control span.is-on-label {
+  opacity: 0.35;
+}
+
+.premium-knob {
+  position: relative;
+  flex: none;
+  border: 0;
+  padding: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 28%, rgba(255, 255, 255, 0.14), transparent 22%),
+    repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.04) 0deg 1deg, transparent 1deg 2deg),
+    conic-gradient(from 30deg, #0a0a0a, #33302d, #0a0a0a, #262321, #0a0a0a);
+  box-shadow:
+    inset 0 0 0 max(1px, calc(0.2 * var(--u))) rgba(255, 255, 255, 0.06),
+    inset 0 calc(-0.8 * var(--u)) calc(1.6 * var(--u)) rgba(0, 0, 0, 0.45),
+    0 calc(1.1 * var(--u)) calc(2 * var(--u)) rgba(40, 25, 15, 0.28);
+  cursor: pointer;
+}
+
+.premium-knob:focus {
+  outline: none;
+}
+
+.premium-knob:focus-visible {
+  outline: 2px solid var(--tt-pink);
+  outline-offset: 3px;
+}
+
+/* invisible hit-area extension: the knob is always at least 44 × 44px to tap */
+.premium-power-knob::after {
+  content: "";
+  position: absolute;
+  inset: min(0px, calc((100% - 44px) / 2));
+  border-radius: 50%;
+}
+
+.premium-power-knob {
+  width: max(36px, calc(10.5 * var(--u)));
+  height: max(36px, calc(10.5 * var(--u)));
+  transition: rotate 460ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.premium-turntable.is-off .premium-power-knob {
+  rotate: -42deg;
+}
+
+.premium-knob i {
+  position: absolute;
+  left: 50%;
+  top: 17%;
+  width: max(6px, calc(1.5 * var(--u)));
+  height: max(6px, calc(1.5 * var(--u)));
+  border-radius: 50%;
+  background: var(--tt-pink);
+  box-shadow: 0 0 calc(1.2 * var(--u)) rgba(240, 52, 127, 0.75);
+  transform: translateX(-50%);
+  opacity: 0.25;
+  transition: opacity 420ms ease, box-shadow 420ms ease;
+}
+
+.premium-turntable.is-powered .premium-power-knob i {
+  opacity: 1;
+}
+
+.premium-turntable.is-off .premium-power-knob i {
+  box-shadow: none;
+}
+
+/* ================================================================== volume panel */
+/*
+ * Inner grid (measured from the reference panel):
+ *   columns: pad 9% | labels 42.7% | gap 5.8% | ticks 14.2% | track 8.2% | pad
+ *   rows:    pad 11.1% | scale 53.8% | spacer | dots (centre at 91.1%) | pad
+ */
+.premium-volume {
+  grid-column: volume-l / volume-r;
+  grid-row: volume-t / volume-b;
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: [pad-l] 9% [labels] 42.7% [gap] 5.8% [ticks] 14.2% [track] 8.2% [pad-r] 1fr;
+  grid-template-rows: [pad-t] 11.1% [scale] 53.8% [spacer] 1fr [dots] 10% [pad-b] 3.9%;
+  border-radius: max(9px, calc(1.6 * var(--u)));
+  color: #fff;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 4px),
+    linear-gradient(165deg, #1c1b1a, #0b0b0b 70%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 calc(1.6 * var(--u)) calc(2.8 * var(--u)) rgba(40, 25, 15, 0.3);
+  font-weight: 900;
+  touch-action: none;
+  user-select: none;
+  cursor: ns-resize;
+}
+
+.premium-volume:focus {
+  outline: none;
+}
+
+.premium-volume:focus-visible {
+  outline: 2px solid var(--tt-pink);
+  outline-offset: 3px;
+}
+
+/* labels sit on zero-height rows, so each one is centred exactly on its line (0/25/50/75/100) */
+.premium-volume-scale {
+  grid-column: labels;
+  grid-row: scale;
+  display: grid;
+  grid-template-rows: 0 1fr 0 1fr 0 1fr 0 1fr 0;
+  justify-items: end;
+}
+
+.premium-volume-scale span {
+  align-self: center;
+  color: #fff;
+  font-size: max(8.5px, calc(2.5 * var(--u)));
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.premium-volume-scale span:nth-child(1) { grid-row: 1; }
+.premium-volume-scale span:nth-child(2) { grid-row: 3; }
+.premium-volume-scale span:nth-child(3) { grid-row: 5; }
+.premium-volume-scale span:nth-child(4) { grid-row: 7; }
+.premium-volume-scale span:nth-child(5) { grid-row: 9; }
+
+/* 9 ticks (every 12.5) spread evenly over the same span */
+.premium-volume-ticks {
+  grid-column: ticks;
+  grid-row: scale;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: -0.5px 0;
+}
+
+.premium-volume-ticks i {
+  display: block;
+  flex: none;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.premium-volume-track {
+  grid-column: track;
+  grid-row: scale;
+  position: relative;
+}
+
+/* recessed groove */
+.premium-volume-track::before {
+  content: "";
+  position: absolute;
+  top: -1.5%;
+  bottom: -1.5%;
+  left: 50%;
+  width: max(5px, calc(0.75 * var(--u)));
+  border-radius: 999px;
+  background: #050505;
+  box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.1);
+  transform: translateX(-50%);
+}
+
+.premium-volume-fill {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: max(3px, calc(0.45 * var(--u)));
+  height: var(--volume-fill);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ff5b9c, var(--tt-pink));
+  box-shadow: 0 0 calc(1.1 * var(--u)) var(--tt-pink-glow);
+  transform: translateX(-50%);
+  transition: height 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.premium-volume-thumb {
+  position: absolute;
+  left: 50%;
+  top: var(--volume-y);
+  width: max(16px, calc(3.8 * var(--u)));
+  height: max(12px, calc(2.6 * var(--u)));
+  border-radius: max(5px, calc(0.9 * var(--u)));
+  background:
+    radial-gradient(ellipse at 50% 18%, rgba(255, 255, 255, 0.16), transparent 60%),
+    linear-gradient(180deg, #2c2a28, #0c0c0c);
+  box-shadow:
+    0 0 0 max(1px, calc(0.17 * var(--u))) rgba(240, 52, 127, 0.75),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.5),
+    0 calc(0.6 * var(--u)) calc(1 * var(--u)) rgba(0, 0, 0, 0.45);
+  transform: translate(-50%, -50%);
+  transition: top 160ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms ease;
+}
+
+.premium-turntable.is-volume-dragging .premium-volume-fill,
+.premium-turntable.is-volume-dragging .premium-volume-thumb {
+  transition: none;
+}
+
+.premium-turntable.is-volume-dragging .premium-volume-thumb,
+.premium-volume:hover .premium-volume-thumb {
+  box-shadow:
+    0 0 0 max(1px, calc(0.17 * var(--u))) var(--tt-pink),
+    0 0 calc(1 * var(--u)) var(--tt-pink-glow),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.5),
+    0 calc(0.6 * var(--u)) calc(1 * var(--u)) rgba(0, 0, 0, 0.45);
+}
+
+.premium-turntable.is-off .premium-volume-fill {
+  box-shadow: none;
+}
+
+/* track indicators (current song) */
+.premium-playlist-indicators {
+  grid-column: 1 / -1;
+  grid-row: dots;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13%;
+}
+
+.premium-playlist-indicators span {
+  flex: none;
+  width: max(5px, calc(1.1 * var(--u)));
+  height: max(5px, calc(1.1 * var(--u)));
+  border-radius: 50%;
+  background: #4a4948;
+  transition: background 260ms ease, box-shadow 260ms ease, transform 260ms ease;
+}
+
+.premium-playlist-indicators span.is-active {
+  background: var(--tt-pink);
+  box-shadow: 0 0 calc(0.8 * var(--u)) var(--tt-pink-glow);
+  animation: premiumIndicatorPulse 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ================================================================== transport (Previous / Next) */
+.premium-transport {
+  grid-column: transport-l / transport-r;
+  grid-row: transport-t / transport-b;
+  align-self: center;
+  position: relative;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: max(8px, calc(2.9 * var(--u)));
+}
+
+.premium-ctrl {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: max(34px, calc(8.9 * var(--u)));
+  height: max(34px, calc(8.9 * var(--u)));
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  font: inherit;
+  line-height: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  touch-action: manipulation;
+  /* raised black button with a slightly lighter rim, as in the reference */
+  background:
+    radial-gradient(circle at 50% 50%, #151515 0 64%, #1d1d1d 70%, #0d0d0d 79%, #262626 86%, #0a0a0a 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.6),
+    0 calc(0.9 * var(--u)) calc(1.8 * var(--u)) rgba(40, 25, 15, 0.28),
+    0 calc(0.2 * var(--u)) calc(0.4 * var(--u)) rgba(40, 25, 15, 0.2);
+  transition:
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 200ms ease;
+}
+
+/* hit area ≥ 44px tall and up to 44px wide without reaching into the neighbouring button */
+.premium-ctrl::after {
+  content: "";
+  position: absolute;
+  top: min(0px, calc((100% - 44px) / 2));
+  bottom: min(0px, calc((100% - 44px) / 2));
+  left: max(min(0px, calc((100% - 44px) / 2)), calc(max(8px, calc(2.9 * var(--u))) / -2));
+  right: max(min(0px, calc((100% - 44px) / 2)), calc(max(8px, calc(2.9 * var(--u))) / -2));
+  border-radius: 50%;
+}
+
+.premium-ctrl svg {
+  display: block;
+  width: max(14px, calc(3.9 * var(--u)));
+  height: max(14px, calc(3.9 * var(--u)));
+  pointer-events: none;
+}
+
+.premium-ctrl:hover:not(:disabled) {
+  filter: brightness(1.25);
+  transform: translateY(-1px);
+}
+
+.premium-ctrl:active:not(:disabled) {
+  transform: translateY(1px) scale(0.97);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 1px 3px rgba(0, 0, 0, 0.6),
+    0 calc(0.3 * var(--u)) calc(0.8 * var(--u)) rgba(40, 25, 15, 0.24);
+}
+
+.premium-ctrl:focus {
+  outline: none;
+}
+
+.premium-ctrl:focus-visible {
+  outline: 2px solid var(--tt-pink);
+  outline-offset: 3px;
+}
+
+.premium-ctrl:disabled {
+  cursor: default;
+}
+
+.premium-ctrl:disabled svg {
+  opacity: 0.32;
+}
+
+.premium-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ================================================================== keyframes */
+@keyframes premiumDeckFloat {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 2px;
+  }
+}
+
+@keyframes premiumLedBreath {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes premiumIndicatorPulse {
+  0% {
+    transform: scale(0.8);
+  }
+  40% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ================================================================== responsive */
+@media (max-width: 920px) {
+  .premium-turntable {
+    width: min(680px, 92vw);
+  }
+}
+
+@media (max-width: 620px) {
+  .premium-turntable {
+    width: min(430px, calc(100vw - 32px));
+  }
+}
+
+/*
+ * Phone-sized decks: keep the controls usable instead of shrinking them to unreadable sizes.
+ * The grid's 1fr column absorbs the extra width, so the record gets slightly smaller and nothing
+ * overlaps. (Values are minimums; on larger decks the reference proportions apply unchanged.)
+ */
+@container tbc-deck (max-width: 460px) {
+  .premium-turntable-body {
+    --volume-min: 40px;
+    --ctrl-row-min: 76px; /* 2 × 34px buttons + 8px gap */
+  }
+}
+
+/* Smallest phones (≈320px screens): a slightly smaller knob keeps it clear of the record.
+   Its invisible tap area stays 44 × 44px (see .premium-power-knob::after). */
+@container tbc-deck (max-width: 330px) {
+  .premium-power-knob {
+    width: 30px;
+    height: 30px;
+  }
+
+  .premium-power-control {
+    gap: 4px;
+  }
+}
+
+/* ================================================================== reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .premium-turntable {
+    animation: none;
+    transform: none;
+    transition: none;
+  }
+
+  .premium-turntable *,
+  .premium-turntable *::before,
+  .premium-turntable *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
