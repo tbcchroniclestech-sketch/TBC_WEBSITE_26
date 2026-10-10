@@ -7,8 +7,9 @@
  * play/pause control: tap/click it, or focus it and press Space/Enter (exposed to assistive tech
  * as a "Play music" / "Pause music" button). Dragging the record still scratches it.
  *
- * Nothing plays on page load. Playback starts from: tapping the record, Previous/Next,
- * Space on the focused deck, or switching the power knob back on (established site behaviour).
+ * The deck initializes powered on and attempts playback; if the browser blocks autoplay, the
+ * UI falls back to an honest paused state. Playback can also start from tapping the record,
+ * Previous/Next, Space on the focused deck, or switching the power knob back on.
  *
  * Playback engine: the site's existing logic (single HTMLAudioElement, fades, playlist order,
  * auto-advance on track end, volume ×0.28 gain, volume persisted to localStorage,
@@ -134,8 +135,9 @@ export function VinylTurntable({
   const lastDragTimeRef = useRef(0);
   const recordPressRef = useRef<{ x: number; y: number; t: number; moved: boolean } | null>(null);
   const [isPowered, setIsPowered] = useState(true);
-  // No autoplay: the deck loads powered on and ready, but silent.
-  const [isPlaying, setIsPlaying] = useState(false);
+  // Start in the ON/playback-intent state. If the browser blocks autoplay,
+  // handlePlayFailure immediately returns the UI to an honest paused state.
+  const [isPlaying, setIsPlaying] = useState(true);
   const [isDraggingRecord, setIsDraggingRecord] = useState(false);
   const [isDraggingVolume, setIsDraggingVolume] = useState(false);
   const [trackIndex, setTrackIndex] = useState(0);
@@ -147,7 +149,7 @@ export function VinylTurntable({
     return Number.isFinite(parsedVolume) ? Math.max(0, Math.min(100, parsedVolume)) : 75;
   });
   const isPoweredRef = useRef(true);
-  const isPlayingRef = useRef(false);
+  const isPlayingRef = useRef(true);
   const trackIndexRef = useRef(0);
   const volumeRef = useRef(volume);
   const lastVolumeTickValueRef = useRef(volume);
@@ -299,6 +301,14 @@ export function VinylTurntable({
     setIsPlaying(false);
   };
 
+  const markPlaying = () => {
+    if (!isPoweredRef.current || !isPlayingRef.current) return;
+    isPlayingRef.current = true;
+    targetSpeedRef.current = PLAY_SPEED;
+    setIsPlaying(true);
+    setStatusMessage("");
+  };
+
   /**
    * audio.play() can be refused (browser autoplay policy) or fail (bad/missing file).
    * Instead of showing a spinning record with no sound, fall back to the paused state
@@ -320,13 +330,13 @@ export function VinylTurntable({
     if (audio.error) audio.load(); // retry a track that previously failed to load
     needsFadeInRef.current = true;
     const playback = audio.play();
-    if (playback) playback.catch(handlePlayFailure);
+    if (playback) playback.then(markPlaying).catch(handlePlayFailure);
+    else markPlaying();
   };
 
   useEffect(() => {
     const audio = new Audio(tracks[0].src);
     audio.loop = false;
-    // Nothing autoplays, so only fetch metadata up front (duration for the tonearm); audio streams on first play.
     audio.preload = "metadata";
     audio.volume = 0;
     audioRef.current = audio;
@@ -353,11 +363,15 @@ export function VinylTurntable({
       setStatusMessage(`Couldn't load “${tracks[trackIndexRef.current].title}”. Try again or skip to another song.`);
     };
 
-    const handlePlaying = () => setStatusMessage("");
+    const handlePlaying = () => markPlaying();
+    const handlePause = () => {
+      if (!audio.ended && isPlayingRef.current) markStopped();
+    };
 
     audio.addEventListener("ended", handleEnded);
     audio.addEventListener("error", handleError);
     audio.addEventListener("playing", handlePlaying);
+    audio.addEventListener("pause", handlePause);
 
     volumeTickRefs.current = Array.from({ length: 4 }, () => {
       const tick = new Audio(volumeTickSrc);
@@ -373,6 +387,7 @@ export function VinylTurntable({
       audio.removeEventListener("ended", handleEnded);
       audio.removeEventListener("error", handleError);
       audio.removeEventListener("playing", handlePlaying);
+      audio.removeEventListener("pause", handlePause);
       audio.pause();
       audioRef.current = null;
       volumeTickRefs.current.forEach((tick) => tick.pause());

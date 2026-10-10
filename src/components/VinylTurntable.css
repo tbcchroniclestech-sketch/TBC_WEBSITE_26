@@ -506,6 +506,10 @@
   transition: rotate 460ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.premium-turntable.is-powered .premium-power-knob {
+  rotate: 42deg;
+}
+
 .premium-turntable.is-off .premium-power-knob {
   rotate: -42deg;
 }
