@@ -10,13 +10,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ArrowUpRight,
   BadgeCheck,
-  Clapperboard,
   Eye,
   Heart,
   Instagram,
   Mail,
   MessageCircle,
-  Mic2,
   Play,
   Youtube,
 } from "lucide-react";
@@ -307,6 +305,29 @@ const comments = [
   "Bahut badhiya bhai log",
   "Childhood memories ❤️",
   "Love the content alreadyyyy🥰✨",
+];
+
+const clients = [
+  {
+    name: "Saladific",
+    logo: "/assets/2dc40617-7aac-4556-bb22-cbdeab3cc5da.png",
+    className: "is-saladific",
+  },
+  {
+    name: "Pi-Fi",
+    logo: "/assets/69603209-05df-4dd8-9865-a1b716b68f13.png",
+    className: "is-pifi",
+  },
+  {
+    name: "MLP Co-Working Lounge",
+    logo: "/assets/file_00000000b09082118929d663bef47e8c.png",
+    className: "is-lmp",
+  },
+  {
+    name: "L&T & Co.",
+    logo: "/assets/lit & co logo FINAL.png",
+    className: "is-lit",
+  },
 ];
 
 function MagneticButton({ children, href = "#contact" }: { children: React.ReactNode; href?: string }) {
@@ -988,17 +1009,28 @@ function App() {
           </div>
         </section>
 
-        <section className="testimonials">
-          <article data-reveal>
-            <Mic2 size={26} />
-            <p>“Simple, honest, and sometimes too real.”</p>
-            <span>The brand, accidentally writing the client brief</span>
-          </article>
-          <article data-reveal>
-            <Clapperboard size={26} />
-            <p>“If this is the website, imagine the campaign.”</p>
-            <span>Future client energy</span>
-          </article>
+        <section className="clients-showcase" data-reveal aria-labelledby="clients-heading">
+          <div className="clients-copy">
+            <p className="section-kicker clients-kicker">OUR KIND OF PEOPLE</p>
+            <h2 id="clients-heading">
+              The brands that trusted us<br />
+              to make some
+              noise<span>.</span>
+            </h2>
+            <p className="clients-subcopy">Great collaborations start with a little curiosity.</p>
+          </div>
+          <div className="clients-grid" aria-label="Client logos">
+            {clients.map((client) => (
+              <div
+                className={`client-logo-card ${client.className}`}
+                key={client.name}
+              >
+                <div className="client-logo-media">
+                  <img src={client.logo} alt={`${client.name} logo`} loading="lazy" decoding="async" />
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section className="contact" id="contact" data-reveal>
