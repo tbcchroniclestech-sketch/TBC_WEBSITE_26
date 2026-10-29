@@ -293,20 +293,6 @@ const youtubeVideos: YouTubeVideo[] = [
   },
 ];
 
-const comments = [
-  "Epic 😂😂😂",
-  "Chaos",
-  "Hahaha lovely",
-  "Crazy",
-  "Favorite ❤️",
-  "Lovely piece guys 🙌",
-  "Love this❤️",
-  "Gajab!!! 🔥 Keep it up.",
-  "Bahut badhiya bhai log",
-  "Childhood memories ❤️",
-  "Love the content alreadyyyy🥰✨",
-];
-
 const clients = [
   {
     name: "Saladific",
@@ -966,54 +952,13 @@ function App() {
           </div>
         </section>
 
-        <section className="community">
-          <div className="section-head" data-reveal>
-            <p className="section-kicker">Community Love</p>
-            <h2>The comment section became part of the show.</h2>
-          </div>
-          <div className="comment-cloud">
-            {comments.map((comment, index) => (
-              <motion.div
-                className="comment"
-                key={comment}
-                data-reveal
-                animate={{ y: [0, index % 2 ? -12 : 12, 0] }}
-                transition={{ duration: 5 + index * 0.25, repeat: Infinity, ease: "easeInOut" }}
-              >
-                {comment}
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
         <YouTubeShowcaseSection />
-
-        <section className="verified" data-reveal>
-          <div>
-            <p className="section-kicker">Verified Interactions</p>
-            <h2>The city likes us &amp; you will too.</h2>
-          </div>
-          <div className="verified-grid">
-            {[
-              ["Chirayu Mistry", "Liked a TBC post", "/assets/chirayu-like.png"],
-              ["Radhikaraje Gaekwad", "Liked a TBC post", "/assets/radhikaraje-like.png"],
-            ].map(([name, action, image]) => (
-              <motion.article className="verified-card" key={name} whileHover={{ y: -8 }}>
-                <img src={image} alt={`${name} interaction screenshot`} />
-                <div>
-                  <h3>{name} <BadgeCheck size={18} /></h3>
-                  <p>{action}</p>
-                </div>
-              </motion.article>
-            ))}
-          </div>
-        </section>
 
         <section className="clients-showcase" data-reveal aria-labelledby="clients-heading">
           <div className="clients-copy">
             <p className="section-kicker clients-kicker">OUR KIND OF PEOPLE</p>
             <h2 id="clients-heading">
-              The brands that trusted us<br />
+              The brands that trust us<br />
               to make some
               noise<span>.</span>
             </h2>
