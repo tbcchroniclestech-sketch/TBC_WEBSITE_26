@@ -210,9 +210,9 @@ const teamLeads: TeamLead[] = [
 
 const teamMembers: TeamMember[] = [
   {
-    name: "Vamsee",
+    name: "Vamsee & Dhruv",
     role: "Technology & Automation",
-    description: "Leads the technology side of TBC, building smarter systems, workflows and digital solutions that make the team faster and more efficient.",
+    description: "Lead the technology side of TBC, building smarter systems, workflows and digital solutions that make the team faster and more efficient.",
   },
   {
     name: "Vibhav",
@@ -230,7 +230,7 @@ const teamMembers: TeamMember[] = [
     description: "Works across content creation and visual storytelling, bringing ideas to life both behind and in front of the camera.",
   },
   {
-    name: "Anjali & Shubhankar",
+    name: "Anjali & Yukta",
     role: "Interns",
     description: "Support the team across research, content, ideation and everyday creative execution.",
   },
